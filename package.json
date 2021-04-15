@@ -3,6 +3,8 @@
     "@openzeppelin/contracts": "^4.0.0"
   },
   "devDependencies": {
-    "@openzeppelin/test-environment": "^0.1.9"
+    "@openzeppelin/test-environment": "^0.1.9",
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2"
   }
 }
