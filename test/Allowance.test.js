@@ -21,7 +21,7 @@ function debugError(e) {
     console.log('----');
 }
 
-test.before(async t => {
+test.beforeEach(async t => {
     t.context.allowance = await Allowance.new({ from: owner });
 });
 
