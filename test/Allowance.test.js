@@ -1,5 +1,9 @@
 import test from 'ava';
+
+// BN.js usage standardized by Ethereum to handlee BigNumber.
+// https://github.com/ethjs/ethjs-unit/blob/master/docs/user-guide.md
 import BN from 'bn.js';
+
 import { accounts, contract } from '@openzeppelin/test-environment';
 const [owner, user1] = accounts;
 
@@ -41,4 +45,18 @@ test('SetAllowance should store given value', async t => {
     // Use is if you concern about type, otherwise true.
     t.is(stored.toNumber(), value2.toNumber());
     t.true(stored.toNumber() == value2);
+});
+
+test('SetAllowance should emit AllowanceChanged', async t => {
+    const value2 = new BN('2', 10);
+    const tx = await t.context.allowance.setAllowance(user1, value2, { from: owner });
+    const { logs } = tx;
+
+    const event = logs[0];
+    // There must be a betteer way surely?
+    t.is(event.event, 'AllowanceChanged');
+    t.is(event.args._forWho, user1);
+    t.is(event.args._byWhom, owner);
+    t.is(event.args._oldAmount.toNumber(), 0);
+    t.is(event.args._newAmount.toNumber(), value2.toNumber());
 });
